@@ -1,0 +1,276 @@
+.recipe-detail-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 16px;
+}
+
+.recipe-details {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: left;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1000px;
+    box-sizing: border-box;
+}
+
+.recipe-ingredients ul {
+    list-style: disc;
+    margin: 0.25rem 0 1rem 1.25rem;
+    padding: 0;
+}
+.recipe-instructions ol {
+    list-style: decimal;
+    margin: 0.25rem 0 0 1.25rem;
+    padding: 0;
+}
+
+.nutritional-info {
+    min-width: 260px;
+}
+.nutritional-info table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.nutritional-info td {
+    padding: 6px 8px;
+}
+.nutritional-info td:last-child {
+    text-align: right;
+}
+
+.reviews > * + * { margin-top: 16px; }
+
+.reviews .ratings form {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 12px;
+    gap: 0.5rem; /* space between each rating and the button */
+}
+
+.reviews .comment      { margin-top: 16px; }
+.reviews .comment_list { margin-top: 20px; }
+
+.reviews button {
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.5rem;
+    border: 0;
+    outline: none;
+    background: var(--secondary-color);
+    text-decoration: none;
+    color: var(--light-text);
+    cursor: pointer;
+}
+
+.reviews button:hover {
+    background-color: var(--accent-color);
+}
+
+.reviews .comments-list {
+  margin-top: 1rem;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+
+.reviews .comments-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.reviews .comments-list ul > * {
+  padding: 0.75rem 0;
+  border-top: 1px solid rgba(0,0,0,.06);
+}
+.reviews .comments-list ul > *:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.reviews .comments-list strong {
+  display: block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  margin-bottom: 0.25rem;
+}
+.reviews .comments-list p {
+  margin: 0;
+  line-height: 1.5;
+  color: #3d3d3d;
+  word-break: break-word;
+}
+
+@media (max-width: 900px) {
+  .recipe-details {
+      flex-direction: column;
+      gap: 24px;
+  }
+  .nutritional-info {
+      min-width: 0;
+  }
+}
+
+img {
+  border-radius: 14px;
+    width: 40rem;
+    height: auto;
+    transition: 0.3s;
+}
+
+img:hover{
+    scale: 1.01;
+}
+
+.fav-btn {
+    font-size: small;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    margin: 0.5rem auto;
+}
+
+.fav-btn img {
+    width: 32px;       /* adjust size */
+    height: 32px;
+    filter: grayscale(100%);  /* default state = grey */
+    transition: filter 0.2s ease, transform 0.2s ease;
+
+}
+
+.fav-btn img:hover {
+    transform: scale(1.1);
+}
+
+/* Active state = coloured heart */
+.fav-btn.active img {
+    filter: none;  /* normal coloured image */
+}
+
+.back-button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 15px 0;
+    border-radius: 8px;
+    background-color: wheat;
+    box-shadow: 1px 1px 1px black;
+    transition: 0.1s;
+    border-color: var(--primary-color);
+}
+
+.back-button a {
+    font-family: Daydream;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--primary-color);
+    display: block;
+    transition: 0.1s;
+}
+
+.back-button:hover {
+    background-color: var(--accent-color);
+    transform: scale(0.95);
+}
+
+.back-button a:hover {
+    color: var(--light-text);
+}
+
+.recipe-details {
+    justify-content: space-between;
+    text-align: left;
+}
+.nutritional-info {
+    align-self: flex-start;
+}
+
+.review-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.user-icon {
+    font-family: Daydream;
+    width: 48px;
+    height: 48px;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.25rem;
+    border-radius: 8px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.review-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.review-left {
+  flex: 3; /* wide column */
+  display: flex;
+  flex-direction: column;
+}
+
+.review-meta p {
+  margin: 0;
+}
+
+.review-comment {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
+
+.delete-review-btn {
+  margin-top: 0.5rem;
+  align-self: flex-start;
+  background-color: #c0392b;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-review-btn:hover {
+  background-color: #a93226;
+}
+
+.review-rating {
+  flex: 1; /* narrower column */
+  text-align: right;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .review-item {
+    flex-direction: column;
+  }
+  .review-rating {
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+}

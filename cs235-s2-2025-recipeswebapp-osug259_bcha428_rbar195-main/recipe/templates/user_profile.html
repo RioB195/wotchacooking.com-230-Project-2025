@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ session['user_name'] }} Profile</title>
+    <link rel="stylesheet" href="../static/css/main.css"/>
+    <link rel="stylesheet" href="../static/css/user_profile.css"/>
+    <link rel="stylesheet" href="../static/css/home.css"/>
+</head>
+<body>
+{% include 'navbar.html' %}
+
+<div class="profile-page">
+    <div class="profile-menu">
+        <ul>
+            <li><a href="{{ url_for('user_profile_bp.profile', section='profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('user_profile_bp.profile', section='favourites') }}">Favourites</a></li>
+            <li><a href="{{ url_for('user_profile_bp.profile', section='reviews') }}">Reviews</a></li>
+        </ul>
+    </div>
+    <!-- Left: Content -->
+    <div class="profile-content">
+        {% if section == 'profile' %}
+            <h2>Your Profile</h2>
+            <img src="../static/images/underConstruction.jpg" alt="Under Construction" style="width:300px;height:auto;">
+            <p>This section is under construction. More features will be added soon!</p>
+
+        {% elif section == 'favourites' %}
+            <h2>Your Favourite Recipes</h2>
+
+            {% if favourite_recipes %}
+                <ul class="recipes-grid">
+                    {% for recipe in favourite_recipes %}
+                        <li class="recipe-card">
+                            <a class="card-link" href="{{ url_for('recipe_detail_bp.recipe_detail', recipe_id=recipe.id, return_to=request.full_path) }}" style="text-decoration: none">
+                                <div class="card-img">
+                                    <img src="{{ recipe.images[0].url }}" alt="recipe image">
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-recipe" style="margin: 0">{{ recipe.name }}</h3>
+                                    <p class="card-author" style="margin: 0">Author: {{ recipe.author.name}}</p>
+                                </div>
+                                <form method="POST" action="{{ url_for('user_profile_bp.remove_favourite', recipe_id=recipe.id, return_to=request.full_path) }}">
+                                    <button type="submit" class="fav-btn active">
+                                        <img src="{{ url_for('static', filename='images/icons/heart.png') }}" alt="Remove from favourites">
+                                    </button>
+                                </form>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No favourites yet.</p>
+            {% endif %}
+
+        {% elif section == 'reviews' %}
+            <h2>Your Reviews</h2>
+
+            {% if reviews %}
+                <div class="reviews">
+                    {% for review, recipe in reviews %}
+                        <div class="review-item">
+                            <!-- Recipe thumbnail and title -->
+                            <a href="{{ url_for('recipe_detail_bp.recipe_detail', recipe_id=recipe.id, return_to=request.full_path) }}" class="review-left" style="text-decoration: none; color: inherit;">
+                                <div class="card-img">
+                                    <img src="{{ recipe.images[0].url }}" alt="{{ recipe.name }}">
+                                </div>
+                                <h3 class="card-recipe" style="margin: 0; margin-top: 0.5rem;">{{ recipe.name }}</h3>
+                                <div class="review-meta">
+                                    <p>Reviewed on {{ review.date.strftime('%Y-%m-%d') }} at {{ review.date.strftime('%H:%M') }}</p>
+                                </div>
+                                <div class="review-comment">
+                                    {{ review.comment }}
+                                </div>
+                            </a>
+
+                            <div class="review-rating">
+                                ⭐ {{ review.rating }}/5
+                                <form method="POST" action="{{ url_for('user_profile_bp.remove_review', recipe_id=recipe.id) }}">
+                                    <input type="hidden" name="review_id" value="{{ review.id }}">
+                                    <button type="submit" class="delete-review-btn">Delete Review</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No reviews yet.</p>
+            {% endif %}
+        {% endif %}
+
+    </div>
+
+    <!-- Right: Menu -->
+
+</div>
+
+{% include 'footer.html' %}
+</body>
+</html>

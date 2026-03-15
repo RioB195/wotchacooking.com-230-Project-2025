@@ -1,0 +1,125 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 60vh; /* adjust height of banner */
+    background-image: url('../images/homePagePhoto.jpg');
+    background-size: cover;
+    background-position: center 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 60px; /* adjust to navbar height */
+    padding-bottom: 40px;
+}
+
+.logo {
+    display: block;
+    width: 35%;
+    height: auto;
+    margin-top: 60px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.logo:hover{
+    transform: rotate(4deg) scale(1.05);
+}
+
+.tagline {
+    font-family: 'Daydream', sans-serif;
+    font-size: medium;
+    color: var(--primary-color);
+    font-weight: bold;
+    justify-content: center;
+    margin-top: 4px;
+    transition: 0.1s;
+}
+
+.tagline:hover {
+    transform: rotate(-1deg) scale(1.05);
+}
+
+.intro-block {
+    text-align: center;          /* centre the text horizontally */
+    margin-top: 14px;            /* space below logo */
+    max-width: 600px;            /* keeps lines from being too wide */
+    transition: 0.1s;
+}
+
+@media (min-width: 1024px) {
+    img {
+        max-width: 60%;
+        max-height: 500px;
+    }
+}
+
+@media (min-width: 768px) {
+    img {
+        max-width: 80%;
+    }
+}
+
+.featured-recipes {
+    margin: 20px;
+}
+
+.recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 300px); /* 3 cards, fixed width */
+    gap: 40px;
+    justify-content: center;  /* centres grid horizontally */
+    margin: 0 auto;           /* centre grid block */
+    padding: 0;
+    list-style: none;
+}
+
+@media (max-width: 980px) {
+  .recipes-grid { grid-template-columns: 1fr; }
+}
+
+.recipe-card {
+    width: 300px;
+    height: 450px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    transition: 0.3s;
+}
+
+.recipe-card:hover{
+    transform: scale(1.02);
+    box-shadow: 3px 3px 5px;
+}
+
+.card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.card-img { height: 60%; }
+.card-img img {
+  max-width: none;   /* ignore any global caps */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+    flex: 1;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title }} - wochacooking.com</title>
+  <link rel="stylesheet" href="../static/css/main.css"/>
+    <link rel="stylesheet" href="../static/css/authentication.css"/>
+</head>
+<body>
+    {% include 'navbar.html'%}
+    <h1 class="title">{{ title }}</h1>
+    <div class="formwrapper">
+        <form method="POST" action="{{ handler_url }}">
+             {{ form.csrf_token }} <!-- Need to include this token - Flask WTForms requires it. -->
+        <!-- Username -->
+            <div class="form-field">{{ form.user_name.label }} {{ form.user_name }}
+                {% if form.user_name.errors or user_name_error_message is not none %}
+                    <ul class="errors">
+                        {% if user_name_error_message is not none %}
+                            <a href="{{ url_for('authentication_bp.register')}}">{{ user_name_error_message }}</a>
+                        {% endif %}
+                        {% for error in form.user_name.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+        <!-- Password -->
+            <div class="form-field">{{ form.password.label }} {{ form.password }}
+                {% if form.password.errors or password_error_message is not none %}
+                    <ul class="errors">
+                        {% if password_error_message is not none %}
+                            {{ password_error_message }}
+                        {% endif %}
+                        {% for error in form.password.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            {{ form.submit(class="submit_btn") }}
+        {% if title == "Login" %}
+            <div class="extra-actions">
+                <p>Don’t have an account?</p>
+                <a href="{{ url_for('authentication_bp.register') }}" class="submit_btn_secondary">Register</a>
+            </div>
+        {% endif %}
+        </form>
+    </div>
+</body>
+</html>

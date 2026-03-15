@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="../static/css/main.css"/>
+<link rel="stylesheet" href="../static/css/navbar.css"/>
+
+<div class="navbar">
+    <a href="{{ url_for('home_bp.home') }}">
+        <img src="../static/images/logos/wochaPanLogo.png" class="nav-logo" alt="wocha logo">
+    </a>
+    <ul class="navbar-btn">
+        <li><a href="{{ url_for('home_bp.home') }}">Home</a></li>
+        <li><a href="{{ url_for('browse_bp.browse') }}">Browse</a></li>
+        {% if 'user_name' not in session %}
+            <li><a href="{{ url_for('authentication_bp.login')}}">Login</a></li>
+        {% else %}
+            <li><a href="{{ url_for('authentication_bp.logout') }}">Logout</a></li>
+        {% endif %}
+    </ul>
+    <div class="welcome-user">
+        {% if 'user_name' in session %}
+            <span>Hello, {{ session['user_name'] }}</span>
+            <a href="{{ url_for('user_profile_bp.profile') }}">
+        {%  else %}
+            <a href="{{ url_for('authentication_bp.login')}}">
+        {% endif %}
+            <img src="../static/images/icons/profile-icon.png" class="profile" alt="profile icon">
+        </a>
+
+    </div>
+</div>
+
+
+<!--<script src="../static/js/navbar.js"></script>-->

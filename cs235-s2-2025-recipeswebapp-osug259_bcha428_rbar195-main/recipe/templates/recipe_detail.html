@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.name }}</title>
+    <link rel="stylesheet" href="../static/css/main.css"/>
+    <link rel="stylesheet" href="../static/css/recipe-detail.css"/>
+</head>
+<body>
+    {% include 'navbar.html'%}
+
+    <div class="recipe-detail-page">
+    <div class="back-button">
+        {% if return_to %}
+            {% if 'browse' in return_to %}
+                <a href="{{ url_for('browse_bp.browse') }}" class="back-link">← Back to browse</a>
+            {% elif 'user_profile' in return_to %}
+                <a href="{{ url_for('user_profile_bp.profile') }}" class="back-link">← Back to user_profile</a>
+            {% else %}
+                <a href="{{ url_for('home_bp.home') }}" class="back-link">← Back to home</a>
+            {% endif %}
+        {% else %}
+            <a href="{{ url_for('home_bp.home') }}" class="back-link">← Back</a>
+        {% endif %}
+
+    </div>
+        <h1>{{ recipe.name }}</h1>
+
+
+        <h2>Average Rating: {{ avg_rating }}</h2>
+
+        <h2 class="centered-heading">
+                Cooking Time: {{ recipe.cook_time }} mins | Prep Time: {{ recipe.preparation_time }} mins
+        </h2>
+        <h2>
+            Health Star Rating: {{ recipe.nutrition.health_star() }} Stars
+        </h2>
+
+        <div class="recipe-intro">
+            <img
+              src="{{ recipe.images[0].url if recipe.images and recipe.images[0].url else url_for('static', filename='images/placeholder.jpg') }}"
+              alt="Photo of {{ recipe.name }}"
+            >
+            <h3>Made By:</h3>
+            <p>Author: {{ recipe.author.name }}</p>
+        </div>
+
+      <div class="recipe-details">
+        <div>
+            <div class="recipe-ingredients">
+              <h2>Ingredients</h2>
+              <ul>
+                {% for item in recipe.ingredients %}
+                  <li>{{ item.ingredient }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="recipe-instructions">
+              <h2>Instructions</h2>
+              <ol>
+                {% for step in recipe.instructions %}
+                  <li>{{ step.step }}</li>
+                {% endfor %}
+              </ol>
+            </div>
+        </div>
+
+        <div class="nutritional-info" id="nutrition">
+            {% if recipe.id in recipe_ids %}
+            <form method="POST" action="{{ url_for('recipe_detail_bp.remove_favourite', recipe_id=recipe.id) }}#nutrition">
+                <input type="hidden" name="return_to" value="{{ request.full_path }}">
+                <button type="submit" class="fav-btn active">
+                    <img src="{{ url_for('static', filename='images/icons/heart.png') }}" alt="Remove from favourites">
+                </button>
+            </form>
+                <p class="fav-btn">Remove from Favourites</p>
+            {% else %}
+            <form method="POST" action="{{ url_for('recipe_detail_bp.add_favourite', recipe_id=recipe.id) }}#nutrition">
+                <input type="hidden" name="return_to" value="{{ request.full_path }}">
+                <button type="submit" class="fav-btn">
+                    <img src="{{ url_for('static', filename='images/icons/heart.png') }}" alt="Add to favourites">
+                </button>
+            </form>
+                <p class="fav-btn">Add to Favourites</p>
+            {% endif %}
+          <h2 class="centered-heading">Nutritional Information</h2>
+          <table>
+            <tbody>
+              <tr><td>Calories</td><td>{{ recipe.nutrition.calories }}</td></tr>
+              <tr><td>Fat</td><td>{{ recipe.nutrition.fat }}g</td></tr>
+              <tr><td>Carbohydrates</td><td>{{ recipe.nutrition.carbohydrates }}g</td></tr>
+              <tr><td>Protein</td><td>{{ recipe.nutrition.protein }}g</td></tr>
+              <tr><td>Saturated Fat</td><td>{{ recipe.nutrition.saturated_fat }}g</td></tr>
+              <tr><td>Cholesterol</td><td>{{ recipe.nutrition.cholesterol }}g</td></tr>
+              <tr><td>Sodium</td><td>{{ recipe.nutrition.sodium }}g</td></tr>
+              <tr><td>Fiber</td><td>{{ recipe.nutrition.fiber }}g</td></tr>
+              <tr><td>Sugar</td><td>{{ recipe.nutrition.sugar }}g</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+        <div class="reviews" id="review">
+            <h2>Leave a Review</h2>
+            {% if not reviews_with_names %}
+                <p>No reviews have been made</p>
+            {% endif %}
+
+            <form action="{{ url_for('recipe_detail_bp.add_review', recipe_id=recipe.id) }}#review" method="post">
+                <input type="hidden" name="return_to" value="{{ request.full_path }}">
+                <div class="review">
+                    <div class="ratings">
+                        {% for i in range(1, 6) %}
+                            <input type="radio" name="rating" value="{{ i }}"> {{ i }}
+                        {% endfor %}
+                    </div>
+                    <div class="comments">
+                        <textarea name="comment" rows="3" cols="50" placeholder="Leave a comment"></textarea><br>
+                    </div>
+                <button type="submit">Submit</button>
+                </div>
+            </form>
+
+            {% if reviews_with_names %}
+                <h2>Reviews:</h2>
+                <div class="reviews-list">
+                    <ul>
+                        {% for review, username in reviews_with_names %}
+                            <li class="review-item">
+                                <div class="user-icon" style="background-color: hsl({{ loop.index * 50 % 360 }}, 70%, 50%);">
+                                    {{ username[0]|upper }}
+                                </div>
+
+                                    <div class="review-left">
+                                        <div class="review-meta">
+                                            <p>
+                                                <strong>{{ username }}</strong>
+                                                <span class="review-date">{{ review.date.strftime('%Y-%m-%d') }} at {{ review.date.strftime('%H:%M') }}</span>
+                                            </p>
+                                        </div>
+
+                                        <div class="review-comment">
+                                            {{ review.comment }}
+                                        </div>
+
+                                        {% if session.get('user_id') == review.user_id %}
+                                        <form method="POST" action="{{ url_for('recipe_detail_bp.remove_review', recipe_id=recipe.id) }}#review">
+                                            <input type="hidden" name="review_id" value="{{ review.id }}">
+                                            <input type="hidden" name="return_to" value="{{ request.full_path }}">
+                                            <button type="submit" class="delete-review-btn">Delete Review</button>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+
+                                <div class="review-rating">
+                                    <strong>{{ review.rating }}/5</strong>
+                                </div>
+                            </li>
+
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
