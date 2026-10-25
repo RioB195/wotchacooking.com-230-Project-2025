@@ -1,4 +1,5 @@
-# wotchacooking.com-235-Project-2025
+# wotchacooking.com
+## CS235 Project 2025
 
 In 2025, my teammates Ben, Owen, and I built this recipe web app as a submission for our CS235 course at the University of Auckland. The app uses a CSV of recipes provided by our lecturer and displays them as a browsable collection. Users can search and browse recipes, view full ingredient lists and step-by-step instructions, and create an account to save their favourites.
 
